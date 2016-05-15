@@ -86,7 +86,7 @@ downloadsvnfiles('',$config{'outdir'});
 
 if (-e "$config{'outdir'}/$config{'scmdir'}/wc.db") {
 	print STDERR "[i] Found new SVN client storage format!\n";
-	my $dbh = DBI->connect("dbi:SQLite:dbname=.svn/wc.db","","");
+	my $dbh = DBI->connect("dbi:SQLite:dbname=$config{'outdir'}/$config{'scmdir'}/wc.db","","");
 
 	my $sqlr = 'SELECT id,root,uuid FROM repository';
 	my $sth = $dbh->prepare($sqlr) or warn "Couldn't prepare statement '$sqlr': " . $dbh->errstr;
@@ -129,7 +129,7 @@ if (-e "$config{'outdir'}/$config{'scmdir'}/wc.db") {
 sub checkout {
 	if ($config{'checkout'}) {
 		print STDERR "[i] Trying to revert the tree, if you get error, upgrade your SVN client!\n";
-		system("svn revert -R .");
+		system("svn revert -R $config{'outdir'}");
 	}
 }
 
