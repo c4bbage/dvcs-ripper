@@ -76,7 +76,11 @@ if ($config{'url'} =~ /\/\.svn/) {
 	$config{'scmurl'} = $config{'url'}."/.svn";
 	$config{'regurl'} = $config{'url'};
 }
-
+$config{'outdir'}=$config{'regurl'};
+$config{'outdir'}=~s/http\:\/\///;
+$config{'outdir'}=~s/\///;
+$config{'outdir'}=~s/\://;
+$config{'scmdir'}="$config{'outdir'}/.svn"
 createsvndirs($config{'outdir'});
 downloadsvnfiles('',$config{'outdir'});
 
@@ -131,6 +135,7 @@ sub checkout {
 
 sub createsvndirs {
 	my ($dir) = @_;
+	mkdir $dir;
 	mkdir $dir."/.svn";
 	mkdir $dir."/.svn/text-base";
 	mkdir $dir."/.svn/pristine";
