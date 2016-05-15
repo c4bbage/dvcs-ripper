@@ -79,12 +79,12 @@ if ($config{'url'} =~ /\/\.svn/) {
 $config{'outdir'}=$config{'regurl'};
 $config{'outdir'}=~s/http\:\/\///;
 $config{'outdir'}=~s/\///;
-$config{'outdir'}=~s/\://;
-$config{'scmdir'}="$config{'outdir'}/.svn"
+$config{'outdir'}=~s/\:/\_/;
+# $config{'scmdir'}="$config{'outdir'}/.svn";
 createsvndirs($config{'outdir'});
 downloadsvnfiles('',$config{'outdir'});
 
-if (-e "$config{'scmdir'}/wc.db") {
+if (-e "$config{'outdir'}/$config{'scmdir'}/wc.db") {
 	print STDERR "[i] Found new SVN client storage format!\n";
 	my $dbh = DBI->connect("dbi:SQLite:dbname=.svn/wc.db","","");
 
@@ -111,7 +111,7 @@ if (-e "$config{'scmdir'}/wc.db") {
 	checkout();
 
 } else {
-	if (-e "$config{'scmdir'}/entries") {
+	if (-e "$config{'outdir'}/$config{'scmdir'}/entries") {
 		print STDERR "[i] Found old SVN client storage format!\n";
 		svnentries('',$config{'outdir'});
 		if ($config{'checkout'} and $config{'upgrade'}) {
