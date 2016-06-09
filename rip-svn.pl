@@ -116,7 +116,7 @@ if (-e "$config{'outdir'}/$config{'scmdir'}/wc.db") {
 		svnentries('',$config{'outdir'});
 		if ($config{'checkout'} and $config{'upgrade'}) {
 			print STDERR "[i] Running upgrade, if you get errors, ignore if using older client\n";
-			system("svn upgrade");
+			system("svn upgrade $config{'outdir'}");
 		}
 		checkout();
 		print STDERR "[i] Due to limitations, to get full tree - run this utility few times!\n";
